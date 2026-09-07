@@ -1,5 +1,7 @@
 arm,strategy,total_return_pct,ann_sharpe,max_drawdown_pct,avg_turnover,months
 A,EW,72.0,1.417,-7.79,0.0,43
+A_changes,EW,72.0,1.417,-7.79,0.0,43
 B,EW,72.0,1.417,-7.79,0.0,43
 A,MV,58.26,0.971,-11.83,1.425,43
+A_changes,MV,72.21,1.104,-8.83,1.045,43
 B,MV,100.02,1.335,-9.16,1.294,43

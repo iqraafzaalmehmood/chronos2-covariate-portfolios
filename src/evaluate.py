@@ -54,7 +54,8 @@ def forecast_accuracy(arm):
             "mean_quantile_loss_pct": round(np.mean(pinball) * 100, 3)}
 
 
-acc = pd.DataFrame([forecast_accuracy("A"), forecast_accuracy("B")])
+acc = pd.DataFrame([forecast_accuracy("A"), forecast_accuracy("B"),
+                    forecast_accuracy("A_changes")])
 
 print("\n=== PORTFOLIO PERFORMANCE (A = with covariates, B = without) ===")
 print(summary.to_string(index=False))

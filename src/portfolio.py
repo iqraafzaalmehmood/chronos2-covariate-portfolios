@@ -77,7 +77,7 @@ def run_arm(arm):
 
 
 all_w, all_r = [], []
-for arm in ["A", "B"]:
+for arm in ["A", "B", "A_changes"]:
     w, r = run_arm(arm)
     all_w.append(w)
     all_r.append(r)
