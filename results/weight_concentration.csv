@@ -1,0 +1,9 @@
+arm,mean_HHI,effective_positions,mean_max_weight,mean_positions_above_1pct
+B,0.6996,1.62,0.776,2.28
+A,0.6588,1.87,0.718,2.42
+A_changes,0.6731,1.73,0.744,2.19
+A_wo_Gold,0.6264,1.99,0.69,2.51
+A_wo_Oil_WTI,0.6081,1.95,0.685,2.49
+A_wo_US10Y_yield,0.6564,1.78,0.732,2.3
+A_wo_USD_index,0.6595,1.9,0.724,2.35
+A_wo_VIX_volatility,0.5592,2.17,0.635,2.6
