@@ -55,7 +55,7 @@ def forecast_accuracy(arm):
 
 
 acc = pd.DataFrame([forecast_accuracy("A"), forecast_accuracy("B"),
-                    forecast_accuracy("A_changes")])
+                    forecast_accuracy("A_changes"), forecast_accuracy("A_multi"), forecast_accuracy("B_multi")])
 
 print("\n=== PORTFOLIO PERFORMANCE (A = with covariates, B = without) ===")
 print(summary.to_string(index=False))

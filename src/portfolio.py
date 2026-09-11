@@ -77,7 +77,7 @@ def run_arm(arm):
 
 
 all_w, all_r = [], []
-for arm in ["A", "B", "A_changes",
+for arm in ["A_multi", "B_multi", "A_changes",
             "A_wo_Oil_WTI", "A_wo_USD_index", "A_wo_Gold",
             "A_wo_US10Y_yield", "A_wo_VIX_volatility"]:
     w, r = run_arm(arm)
