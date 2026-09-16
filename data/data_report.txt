@@ -1,0 +1,32 @@
+Sample period : 2018-06-19 to 2026-09-01
+Trading days  : 2062
+ETFs          : XLB, XLC, XLE, XLF, XLI, XLK, XLP, XLRE, XLU, XLV, XLY
+Covariates    : Oil_WTI, USD_index, Gold, US10Y_yield, VIX_volatility
+
+Covariate gaps before forward-fill:
+Ticker
+Oil_WTI           2
+USD_index         2
+Gold              3
+US10Y_yield       1
+VIX_volatility    0
+
+Covariate gaps after forward-fill (limit=5):
+Ticker
+Oil_WTI           0
+USD_index         0
+Gold              0
+US10Y_yield       0
+VIX_volatility    0
+
+ETF rows dropped: 0
+
+Notes: master calendar = ETF trading days; covariates forward-filled
+(past values only, no back-fill); sample starts when all series exist.
+
+[PASS] Same number of rows
+[PASS] Identical calendars
+[PASS] No missing ETF prices
+[PASS] No missing covariates
+[PASS] All ETF prices positive
+[PASS] VIX in range 5-100
