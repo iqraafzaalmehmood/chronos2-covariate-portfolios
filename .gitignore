@@ -2,3 +2,16 @@ data/
 __pycache__/
 *.pyc
 .ipynb_checkpoints
+
+# Large/generated V3 forecast outputs
+results_v3/forecasts_A.csv
+results_v3/forecasts_B.csv
+results_v3/forecasts_C.csv
+results_v3/forecasts_A_wo_*.csv
+results_v3/macro_forecasts_C.csv
+
+# Large/generated detailed outputs
+results_v3/forecast_evaluation_detail.csv
+results_v3/ablation_forecast_evaluation_detail.csv
+results_v3/portfolio_returns.csv
+results_v3/ablation_portfolio_returns.csv
