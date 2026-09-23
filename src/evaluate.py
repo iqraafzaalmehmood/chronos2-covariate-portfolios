@@ -1,5 +1,6 @@
-"""Final evaluation: portfolio metrics (Sharpe, max drawdown, total return,
-turnover) for every arm/strategy, plus forecast accuracy per arm."""
+"""Final evaluation: portfolio metrics including Sharpe ratio, maximum drawdown, 
+   total return and turnover for each arm and strategy. 
+   Forecast accuracy for each arm is also included."""
 
 import numpy as np
 import pandas as pd
@@ -31,7 +32,7 @@ summary = pd.DataFrame(rows).sort_values(["strategy", "arm"])
 
 
 def forecast_accuracy(arm):
-    """Median-forecast error and quantile (pinball) loss at the 21-day horizon."""
+    #Median-forecast error and quantile loss at the 21-day horizon.
     fc = pd.read_csv(f"results/forecasts_arm{arm}.csv", parse_dates=["date"])
     fc = fc[fc["day_ahead"] == HORIZON]
     qcols = [c for c in fc.columns if c.startswith("q")]

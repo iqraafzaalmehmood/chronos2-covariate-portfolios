@@ -1,9 +1,4 @@
-"""Weight analysis: does covariate information change how the optimizer allocates?
-
-Computes, per arm, the average weight held in each ETF and three concentration
-measures. Feeds Section 6.5 of the paper.
-"""
-
+# Computing per arm, the average weight held in each ETF and three concentration measures
 import numpy as np
 import pandas as pd
 
@@ -14,7 +9,7 @@ MAIN_ARMS = ["B", "A", "A_changes"]
 arms = [a for a in MAIN_ARMS if a in set(mv["arm"])] + \
        sorted(a for a in set(mv["arm"]) if a not in MAIN_ARMS)
 
-# ---- concentration measures, computed per rebalancing date then averaged ----
+
 rows = []
 for arm in arms:
     sub = mv[mv["arm"] == arm]

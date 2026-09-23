@@ -74,7 +74,6 @@ def main():
             if rows["q50"].isna().any():
                 continue
 
-            # Decision price and forecast denominator now match exactly.
             buy_price = prices.loc[date, etfs]
             sell_price = prices.loc[sell_date, etfs]
 

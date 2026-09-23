@@ -11,7 +11,7 @@ TEST_START = "2023-01-01"
 TEST_END = "2026-07-31"
 
 # Fixed-horizon design:
-# use information available through decision date t and forecast t+1,...,t+21.
+# using information available through decision date t and forecast t+1,.....,t+21.
 HORIZON = 21
 CONTEXT_DAYS = 512
 

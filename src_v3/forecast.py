@@ -27,7 +27,7 @@ def main():
     rows = []
 
     for date in dates:
-        # IMPORTANT: information through decision date t is available.
+        # Information through decision date t is available.
         hist = prices.loc[prices.index <= date].tail(CONTEXT_DAYS)
 
         inputs = [hist[etf].to_numpy() for etf in etfs]
@@ -43,7 +43,7 @@ def main():
         
 
         for j, etf in enumerate(etfs):
-            # Chronos returns [series, horizon, quantile] for quantiles.
+            # Chronos is returning series, horizon, quantile for quantiles.
             for h in range(HORIZON):
                 rows.append({
                     "date": date,

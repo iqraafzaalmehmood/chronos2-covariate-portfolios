@@ -1,5 +1,5 @@
-"""Turn Arm A and Arm B forecasts into portfolio weights (mean-variance and
-equal-weight), simulate monthly rebalancing, and save weights + returns."""
+"""Turning Arm A and Arm B forecasts into portfolio weights (mean-variance and
+equal-weight), simulating monthly rebalancing, and saving weights and returns."""
 
 import os
 import numpy as np
@@ -33,7 +33,7 @@ def mean_variance_weights(mu, sigma, gamma=RISK_AVERSION):
 
 def run_arm(arm):
     fc = pd.read_csv(f"results/forecasts_arm{arm}.csv", parse_dates=["date"])
-    # expected 1-month return per ETF: median forecast at day 21 vs last price
+    # expected 1 month return per ETF: median forecast at day 21th vs the last price
     end_of_month = fc[fc["day_ahead"] == HORIZON]
 
     dates = sorted(end_of_month["date"].unique())
@@ -46,15 +46,15 @@ def run_arm(arm):
         mu = np.array([snap.loc[e, "q50"] / last_price[e] - 1.0 for e in etfs])
 
         hist = daily_ret.loc[daily_ret.index < date].tail(COV_WINDOW)
-        sigma = hist.cov().values * HORIZON        # scale daily cov to 1 month
+        sigma = hist.cov().values * HORIZON        # scale daily covariance to 1 month
 
         weights = {
             "MV": mean_variance_weights(mu, sigma),
             "EW": np.ones(len(etfs)) / len(etfs),
         }
 
-        # realized holding-period return: this rebalance date to the next one
-        # (for the last date: HORIZON trading days ahead)
+        # Holding-period return; rebalance date to the next one
+        # for the last date HORIZON trading days are ahead
         buy = prices.loc[date]
         if t + 1 < len(dates):
             sell = prices.loc[dates[t + 1]]

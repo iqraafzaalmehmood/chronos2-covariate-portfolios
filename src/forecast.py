@@ -1,6 +1,5 @@
-"""Arm B forecasting loop: walk month by month through the test period and
-save Chronos-2 zero-shot quantile forecasts for all 11 ETFs (prices only,
-no covariates)."""
+"""Arm B forecasting loop: generating zero-shot Chronos-2 forecasts
+month by month for all 11 ETFs using prices only"""
 
 import os
 import pandas as pd

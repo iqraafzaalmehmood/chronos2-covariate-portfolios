@@ -1,13 +1,5 @@
 """Multivariate variant: all 11 ETFs are forecast jointly as one group, so
-Chronos-2's group attention can use cross-series structure.
-
-Runs both arms under identical conditions:
-  A_multi - joint targets + 5 macro covariates
-  B_multi - joint targets only
-
-This differs from forecast.py / forecast_armA.py, which forecast each ETF
-separately (n_variates = 1) and therefore never exercise group attention.
-"""
+Chronos-2's group attention can use cross-series structure."""
 
 import os
 import numpy as np
@@ -43,7 +35,7 @@ for i, date in enumerate(month_starts, 1):
     hist = prices.loc[prices.index < date].tail(CONTEXT_DAYS)
     cov_hist = covs.loc[hist.index]
 
-    # shape (n_variates, context) -> one multivariate item instead of 11 items
+    # Shape: (n_variates, context) ; treat all 11 ETFs as one multivariate item.
     target = hist[etfs].values.T
 
     specs = {

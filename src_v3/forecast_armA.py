@@ -28,7 +28,7 @@ def main():
     rows = []
 
     for date in dates:
-        # Arm A: target and historical macro covariates are observed through t.
+        # Arm A: target and historical macro-covariates are observed through t.
         hist = prices.loc[prices.index <= date].tail(CONTEXT_DAYS)
         cov_hist = covs.loc[hist.index]
 

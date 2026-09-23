@@ -1,5 +1,5 @@
-"""Leave-one-out ablations: rerun the Arm A forecasting loop five times,
-each time excluding one covariate, to see which signal drives the results."""
+"""Leave-one-out ablations: reruning the Arm A forecasting loop five times and
+each time excluding one of the covariates to see which signal drives the results."""
 
 import os
 import pandas as pd

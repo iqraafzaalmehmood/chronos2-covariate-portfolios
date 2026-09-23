@@ -1,5 +1,5 @@
-"""Figures for the paper: cumulative wealth curves for the main comparison
-and a Sharpe-ratio bar chart across all covariate ablations."""
+"""Cumulative wealth curves is for the main comparison
+and a Sharpe-ratio bar chart is for all covariate ablations."""
 
 import os
 import numpy as np
@@ -18,7 +18,7 @@ LABELS = {
     "A_changes": "Arm A (covariates as changes)",
 }
 
-# ---- Figure 1: wealth curves, main comparison ----
+# Figure 1: Wealth curves (main comparison)
 fig, ax = plt.subplots(figsize=(8, 4.5))
 
 for arm, style in [("B", "-"), ("A", "-"), ("A_changes", "--")]:
@@ -41,7 +41,7 @@ fig.tight_layout()
 fig.savefig("results/figures/wealth_curves.png", dpi=200)
 print("Saved results/figures/wealth_curves.png")
 
-# ---- Figure 2: Sharpe by ablation ----
+# Figure 2: Sharpe by ablation
 mv = summary[summary["strategy"] == "MV"].copy()
 order = ["B", "A_wo_US10Y_yield", "A_wo_USD_index", "A_wo_VIX_volatility",
          "A_changes", "A", "A_wo_Gold", "A_wo_Oil_WTI"]

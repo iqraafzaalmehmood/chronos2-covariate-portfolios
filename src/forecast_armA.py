@@ -31,7 +31,7 @@ pipeline = BaseChronosPipeline.from_pretrained("amazon/chronos-2")
 
 rows = []
 for i, date in enumerate(month_starts, 1):
-    # history strictly BEFORE the forecast date -> no look-ahead
+    # Use only data available before the forecast date to avoid look-ahead bias.
     hist = prices.loc[prices.index < date].tail(CONTEXT_DAYS)
     cov_hist = covs.loc[hist.index]          # same dates as the target window
 

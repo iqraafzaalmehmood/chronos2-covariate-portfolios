@@ -1,5 +1,4 @@
-"""Paired bootstrap for the Sharpe-ratio difference between the two MV
-portfolios (Arm A with covariates vs Arm B without)."""
+"""Arm A with covariates vs Arm B without covariates."""
 
 import numpy as np
 import pandas as pd

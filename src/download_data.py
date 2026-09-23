@@ -1,5 +1,5 @@
-"""Download daily ETF and macro covariate data from Yahoo Finance,
-align calendars, and save clean CSVs plus a short data report."""
+"""Downloading daily ETF and macro covariate data from Yahoo Finance,
+align calendars and save clean CSVs with a short data report."""
 
 import os
 import pandas as pd
@@ -39,7 +39,7 @@ gaps_before = cov.isna().sum()
 cov = cov.ffill(limit=5)
 gaps_after = cov.isna().sum()
 
-# keep only the period where all series exist (XLC starts mid-2018)
+# keeping only the period where all series exist (XLC starts mid 2018)
 start_day = max(etf.dropna().index.min(), cov.dropna().index.min())
 etf, cov = etf.loc[start_day:], cov.loc[start_day:]
 

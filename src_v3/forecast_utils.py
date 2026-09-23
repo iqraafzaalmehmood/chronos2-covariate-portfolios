@@ -8,7 +8,7 @@ def load_prices_covariates(price_file, covariate_file):
     prices = pd.read_csv(price_file, index_col=0, parse_dates=True).sort_index()
     covs = pd.read_csv(covariate_file, index_col=0, parse_dates=True).sort_index()
 
-    # Keep common trading dates only. No future filling is introduced here.
+    # Keeping common trading dates only
     common = prices.index.intersection(covs.index)
     prices = prices.loc[common].copy()
     covs = covs.loc[common].copy()
@@ -17,13 +17,6 @@ def load_prices_covariates(price_file, covariate_file):
 
 
 def make_nonoverlapping_origins(prices, test_start=TEST_START, test_end=TEST_END, horizon=HORIZON):
-    """
-    Build non-overlapping fixed-horizon forecast origins.
-
-    If t is an origin, the model uses data through t and predicts the next
-    `horizon` observed trading days. The next origin is exactly the sell date
-    from the previous period, which prevents overlapping portfolio returns.
-    """
     eligible = prices.loc[test_start:test_end].index
     if len(eligible) == 0:
         return []
@@ -31,7 +24,7 @@ def make_nonoverlapping_origins(prices, test_start=TEST_START, test_end=TEST_END
     all_idx = prices.index
     origins = []
 
-    # first observed trading day on/after TEST_START
+    #Observing trading day on/after TEST_START
     pos = all_idx.get_indexer([eligible[0]])[0]
 
     while True:
@@ -51,10 +44,6 @@ def make_nonoverlapping_origins(prices, test_start=TEST_START, test_end=TEST_END
 
 
 def tensor_to_numpy(x):
-    """
-    Robustly convert Chronos outputs to NumPy whether they are torch tensors
-    or already NumPy-like objects.
-    """
     if hasattr(x, "detach"):
         x = x.detach()
     if hasattr(x, "cpu"):

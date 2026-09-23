@@ -14,7 +14,6 @@ MODEL_NAME = "amazon/chronos-2"
 
 
 def main():
-    # RESULTS_DIR is created at import time in config.py, before any file writes.
     prices, covs = load_prices_covariates(PRICE_FILE, COVARIATE_FILE)
     etfs = list(prices.columns)
     cov_names = list(covs.columns)
@@ -33,7 +32,7 @@ def main():
         hist = prices.loc[prices.index <= date].tail(CONTEXT_DAYS)
         cov_hist = covs.loc[hist.index]
 
-        # Step 1: forecast each macro series t+1,...,t+21 using data through t.
+        #forecasting each macro series t+1,...,t+21 using data through t.
         macro_inputs = [cov_hist[name].to_numpy() for name in cov_names]
 
         macro_q, _ = pipeline.predict_quantiles(
@@ -56,7 +55,7 @@ def main():
                     "q50": float(value),
                 })
 
-        # Step 2: ETF forecasts use both past covariates and estimated future covariates.
+        # ETF forecasts is using both past and estimated future covariates.
         etf_inputs = []
         for etf in etfs:
             etf_inputs.append({
