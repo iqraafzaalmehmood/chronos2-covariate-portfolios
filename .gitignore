@@ -14,3 +14,11 @@ results_v3/forecast_evaluation_detail.csv
 results_v3/ablation_forecast_evaluation_detail.csv
 results_v3/portfolio_returns.csv
 results_v3/ablation_portfolio_returns.csv
+# LaTeX generated files
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
