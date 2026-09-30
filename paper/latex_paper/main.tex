@@ -61,13 +61,13 @@ Koblenz, September 2026
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-This study examines whether macroeconomic covariates improve the practical value of zero-shot time-series foundation-model forecasts in portfolio construction. The central question is not only whether external variables reduce forecast error, but whether any statistical improvement survives the nonlinear transformation from forecasts to portfolio weights and ultimately produces economically better investment outcomes. A controlled predict-then-optimize experiment is implemented with Chronos-2 on 11 U.S. sector exchange-traded funds over a 2023--2026 evaluation period. Three forecasting arms are compared: a price-only baseline (Arm B), a model supplied with historical macroeconomic covariates (Arm A), and an extension that first forecasts future macroeconomic paths and supplies them as future covariates (Arm C). The macro variables are VIX volatility, the U.S. 10-year Treasury yield, WTI crude oil, gold, and the U.S. dollar index. Forecasts use information available through each decision date and predict the next 21 trading days; the portfolio holding horizon is aligned to the same 21-day interval. Historical covariates improve several forecast-error measures relative to the no-covariate baseline. In the portfolio experiment, Arm A achieves a cumulative return of 65.36\% and an annualized Sharpe ratio of 1.098, compared with 44.92\% and 0.839 for Arm B. However, the paired circular block-bootstrap confidence interval for the Sharpe difference includes zero (difference 0.264; 95\% CI [-0.202, 0.735]; p=0.2396), so the economic improvement is not statistically conclusive.
+This paper investigates whether incorporating macroeconomic covariates enhances the practical utility of zero-shot time series foundation model forecasts for portfolio construction. The main question is whether any statistical improvement survives the nonlinear transformation from forecasts to portfolio weights, not only that external variables reduce forecast error, and then ultimately produce economically better investment outcomes. We implemented an experiment with Chronos-2 on 11 U.S. sector ETFs from year 2023 to 2026 for evaluation. Three forecasting setups are compared: Arm A a model that contained the prices plus macroeconomic covariates from the past, Arm B only contains the prices and Arm C combines the prices with the future covariates. The macro variables that are used are VIX (The CBOE Volatility Index), the US 10 year Treasury Yield, WTI oil(US oil prices), gold and the US dollar index. Model use information available through each decision date and predict the next 21 trading days. The portfolio holding horizon corresponds to the same 21 day interval. Past covariates perform better in improving several forecast error measures in comparison to the price only setup. In the portfolio experiment, Arm A achieves a cumulative return of 65.36\% and an annual Sharpe ratio of 1.098 compared with 44.92\% return and 0.839 Sharpe ratio for Arm B. However, the paired circular block bootstrap confidence interval for the Sharpe difference includes zero (difference 0.264; 95\% CI [-0.202, 0.735]; p=0.2396), so the economic improvement is not statistically conclusive.
 
 \textbf{Keywords:} time-series foundation models, Chronos-2, macroeconomic covariates, portfolio optimization, zero-shot forecasting, sector ETFs, Sharpe ratio
 
 \chapter*{Zusammenfassung}
 \addcontentsline{toc}{chapter}{Zusammenfassung}
-Diese Arbeit untersucht, ob makroökonomische Kovariaten den praktischen Nutzen von Zero-Shot-Prognosen eines Time-Series-Foundation-Models für die Portfoliokonstruktion verbessern. Im Mittelpunkt steht nicht nur die Frage, ob externe Variablen den Prognosefehler reduzieren, sondern ob sich statistische Verbesserungen auch in ökonomisch besseren Portfolioergebnissen niederschlagen. Dazu wird ein kontrolliertes Predict-then-Optimize-Experiment mit Chronos-2 auf elf US-Sektor-ETFs im Evaluationszeitraum 2023 bis 2026 durchgeführt. Verglichen werden ein Preis-Basismodell ohne Kovariaten (Arm B), ein Modell mit historischen makroökonomischen Kovariaten (Arm A) sowie eine Erweiterung mit prognostizierten zukünftigen Makropfaden (Arm C).
+In dieser Arbeit wird untersucht, ob die Einbeziehung makroökonomischer Kovariaten den praktischen Nutzen von Zero-Shot-Prognosen auf Basis von Zeitreihen-Grundmodellen für die Portfoliozusammenstellung erhöht. Die zentrale Frage lautet, ob eine statistische Verbesserung die nichtlineare Transformation von Prognosen zu Portfoliogewichtungen übersteht – nicht nur, ob externe Variablen den Prognosefehler verringern, sondern ob sie letztendlich zu wirtschaftlich besseren Anlageergebnissen führen. Zur Bewertung wird mit Chronos-2 ein Experiment mit 11 US-Sektor-ETFs für den Zeitraum von 2023 bis 2026 durchgeführt. Dabei werden drei Prognoseansätze verglichen: Arm A – ein Modell, das die Kurse sowie makroökonomische Kovariaten aus der Vergangenheit enthält, Arm B – ein Modell, das nur die Kurse enthält, und Arm C – ein Modell, das die Kurse mit zukünftigen Kovariaten kombiniert. Die verwendeten makroökonomischen Variablen sind der VIX (CBOE Volatility Index), die Rendite 10-jähriger US-Staatsanleihen, WTI-Öl (US-Ölpreise), Gold und der US-Dollar-Index. Die Modelle nutzen die bis zum jeweiligen Entscheidungszeitpunkt verfügbaren Informationen und prognostizieren die nächsten 21 Handelstage. Der Haltedauerhorizont des Portfolios entspricht demselben 21-Tage-Intervall. Historische Kovariaten schneiden bei der Verbesserung mehrerer Prognosefehlermaße besser ab als das Modell, das ausschließlich auf Kursen basiert. Im Portfolio-Experiment erzielt Arm A eine kumulative Rendite von 65,36\% und eine jährliche Sharpe-Ratio von 1,098, verglichen mit einer Rendite von 44,92\% und einer Sharpe-Ratio von 0,839 für Arm B. Das gepaarte Circular-Block-Bootstrap-Konfidenzintervall für die Sharpe-Differenz umfasst jedoch den Wert Null (Differenz 0,264; 95\%-KI [-0,202; 0,735]; p = 0,2396), sodass die wirtschaftliche Verbesserung statistisch nicht eindeutig ist.
 
 \chapter*{Declaration}
 \addcontentsline{toc}{chapter}{Declaration}
@@ -103,99 +103,24 @@ CI & Confidence Interval
 \chapter{Introduction}\label{introduction}
 
 \section{Motivation}\label{motivation}
+Predicting the financial market is challenging because the signal of interest is often weak compared to the noise, and relationships can shift across different market conditions. Also, the model that performs well on a statistical loss does not always create value when its forecasts are used for investment decisions. This makes financial forecasting for machine learning a challenging task. But with time, the development of time-series foundation models has changed the workflow for practical forecasting. Instead of training a new model for every asset, a pre-trained model can incorporate external variables into an existing model without needing complete retraining (Pineda Arango et al., 2025). Chronos and its successor Chronos-2 are examples of this paradigm. Chronos-2 broadens the foundation model idea from univariate to multivariate and covariate-informed forecasting, which then allows the external variables to enter the model without retraining the specific task.
 
-Forecasting financial markets is difficult because the signal of
-interest is weak relative to noise, relationships change across market
-regimes, and a model that performs well on a statistical loss does not
-necessarily create value after forecasts are translated into investment
-decisions. These difficulties make financial forecasting a demanding
-test for modern machine-learning systems. At the same time, the
-emergence of time-series foundation models has changed the practical
-forecasting workflow. Instead of training a new model for every asset
-and horizon, a pretrained model can be applied zero-shot to previously
-unseen series. Chronos and its successor Chronos-2 are examples of this
-paradigm. Chronos-2 extends the foundation-model idea from univariate
-forecasting to multivariate and covariate-informed forecasting, allowing
-external variables to enter the model without task-specific retraining.
-
-The possibility of conditioning a pretrained forecaster on external
-information is particularly relevant for finance. Asset prices do not
-evolve in isolation. Equity sectors can respond differently to
-volatility, interest rates, commodity prices, and currency conditions.
-Energy-related sectors may be sensitive to oil; rate-sensitive sectors
-can react to changes in Treasury yields; the VIX can proxy market-wide
-risk aversion; gold can reflect defensive demand and inflation concerns;
-and the U.S. dollar can affect multinational firms and global financial
-conditions. A sufficiently flexible nonlinear forecaster may be able to
-use these variables in ways that simple linear predictive regressions
-cannot.
-
-Yet a forecasting improvement is not the same as an investment
-improvement. A portfolio optimizer acts on relative expected returns,
-risk estimates, constraints, and transaction costs. Small forecast
-changes can produce large reallocations when they alter the
-cross-sectional ranking of assets, while a lower average forecast error
-may have little portfolio effect if it occurs on observations that do
-not change portfolio weights. Conversely, a statistically modest
-improvement can matter economically when it consistently improves the
-ranking of investable assets. This distinction motivates the present
-study.
+In financial forecasting, incorporating external variables into pre-trained forecasting models matters because asset prices are influenced not only by past economic conditions but also by comprehensive market conditions. Equity sectors can react differently to volatility, interest rates, commodity prices, and currency conditions. Energy-related sectors may be sensitive to oil. Rate-sensitive sectors respond to changes in Treasury yields. The VIX can be used to measure risk aversion across the financial market for investors. Gold reflects inflation concerns, and the US dollar can affect multinational organizations and global financial conditions. A flexible nonlinear forecaster may be able to use these variables in ways that a simple linear forecaster cannot, but forecasting improvement is not the same as an investment improvement. Portfolio optimization depends on relative expected returns, risk measures, portfolio constraints, and transaction costs when determining asset allocations. Even minor forecast changes can lead to major transformation in portfolio weights when they affect the relative ranking of assets. On the other hand, a reduction in average forecast error may have little effect on portfolio outcomes if it does not change the portfolio allocation. On the other hand, a small improvement in forecast accuracy can have meaningful economic implications if it consistently leads to more accurate rankings of investable assets. This distinction motivates our study.
 
 \section{Problem Statement and Research
 Questions}\label{problem-statement-and-research-questions}
 
-Prior research provides two pieces of evidence that are individually
-important but not yet fully connected. First, covariates can improve
-forecasting when the model is sufficiently flexible. Gu, Kelly, and Xiu
-(2020), for example, show that nonlinear machine-learning methods can
-exploit rich predictor interactions and generate economic gains in
-asset-pricing applications. More recently, ChronosX demonstrates that
-pretrained time-series models can be adapted to use exogenous variables,
-and Chronos-2 directly supports past and future covariates. Second,
-recent studies show that foundation-model forecasts can be incorporated
-into financial strategies, including long/short stock portfolios,
-factor-selection systems, and portfolio reinforcement learning. The
-missing link is a controlled test of whether adding macroeconomic
-covariates to a zero-shot foundation model changes not only forecast
-accuracy but also the value of a multi-asset portfolio.
+Previous studies offer evidence that is important but not fully connected. First, covariates can improve forecasting performance when the model is flexible and can capture complicated relationships. (Gu, Kelly, and Xiu 2020) show that nonlinear ML methods can capture nonlinear interactions among predictors and generate economically relevant improvements in asset pricing. (Pineda Arango et al., 2025) ChronosX effectively incorporates covariate information into pretrained models. Chronos-2 supports both past and future covariates (Fatir Ansari et al., 2025). Foundation model forecasts can be integrated into financial strategies, including stock portfolio construction, factor-selection systems (Engel et al., 2025), and portfolio reinforcement learning (Pishehvar, 2026). H,However, the missing question is whether adding macroeconomic covariates to a zero-shot foundation model changes not only the forecast accuracy but also the value of a multi-asset portfolio.
 
-The main research question is therefore: Do macroeconomic covariates
-improve the economic value of zero-shot Chronos-2 forecasts when those
-forecasts are used in a fixed portfolio-construction pipeline?
+Our main research question motivated by this gap is: Do macroeconomic covariates improve the economic value of zero-shot Chronos-2 forecasts when those forecasts are used in a fixed portfolio-construction pipeline?
 
-This question is decomposed into four empirical sub-questions. RQ1 asks
-whether historical macroeconomic covariates improve out-of-sample
-forecast accuracy relative to a price-only Chronos-2 baseline. RQ2 asks
-whether any forecast improvement translates into higher portfolio return
-or risk-adjusted performance under the same mean-variance allocation
-rule. RQ3 asks whether explicitly forecasting the future macroeconomic
-path and providing it as future covariates adds value beyond historical
-covariates alone. RQ4 asks which individual covariates appear most
-important for the observed portfolio results.
+Out this research question can be broken down into four sub-questions. First, whether past macroeconomic covariates improve out-of-sample forecasts compared with a price-only Chronos-2 model. Second, whether any forecast improvement transforms into higher portfolio return or improves risk-adjusted performance when the same mean-variance allocation procedure is applied. Third, whether thoroughly forecasting the future macroeconomic path and providing it as future covariates brings value compared with using only past covariates. Fourth, examines which individual covariates appear most important for the observed portfolio results.
 
 \section{Contributions}\label{contributions}
 
-The study makes four practical contributions. First, it constructs a
-controlled on/off covariate experiment in which the core forecasting
-model and portfolio rule are held fixed. This isolates the role of the
-information set more cleanly than comparisons across different
-forecasting architectures. Second, it aligns the information cutoff,
-forecast horizon, expected-return definition, and realized holding
-period. At each decision date t, the model sees information available
-through t, forecasts t+1 through t+21, and the portfolio is evaluated
-over exactly the same 21-trading-day interval. Third, the evaluation
-combines conventional forecast metrics with return-oriented measures,
-cross-sectional rank information, portfolio outcomes, and
-time-series-aware bootstrap inference. Fourth, the
-leave-one-covariate-out experiment examines whether the aggregate effect
-of covariates is concentrated in particular macro variables.
+Our research offers four practical contributions. The first of these is to establish a controlled comparison in which the forecasting model and the portfolio construction process stay the same, while the availability of the covariates varies. This approach lets us examine the impact of the information set itself, without confounding it with differences in the forecasting models. Second, the study ensures that there is consistent temporal alignment throughout the information cutoff, the forecasting window, the calculation of expected returns, and the investment period. More specifically, at each decision date (t), forecasts for the periods (t+1) through (t+21) are produced using only the information that was available up to time (t). The portfolio is then assessed over the same 21-trading-day period. Third, the evaluation incorporates traditional forecast metrics, return-oriented measures, cross-sectional rank information, portfolio performance, and time-series-aware bootstrap inference. Fourth, the leave-one-covariate-out experiment investigates whether the overall effect of the covariates is concentrated in certain macrocovariates.
 
-The contribution is deliberately narrower than claiming a new
-forecasting architecture. Chronos-2 is used as a frozen pretrained
-model, and the portfolio optimizer is a conventional long-only
-mean-variance rule. The novelty lies in connecting covariate-informed
-zero-shot forecasting to multi-asset economic evaluation under a
-controlled and reproducible design.
+Our study deliberately focuses on a particular aspect rather than proposing a new forecasting architecture; Chronos-2 serves as a fixed, pre-trained foundation model, and portfolio allocation follows a conventional mean-variance optimization approach. The main contribution is therefore to systematically connect covariate-enhanced zero-shot forecasting with multi-asset portfolio evaluation by means of a controlled and reproducible empirical framework.
 
 \section{Structure of the Paper}\label{structure-of-the-paper}
 
@@ -203,10 +128,10 @@ Chapter 2 reviews the literature on financial predictors, machine
 learning, time-series foundation models, and foundation-model portfolio
 applications. Chapter 3 describes the research design, forecasting arms,
 evaluation metrics, portfolio optimization, statistical inference, and
-ablation analysis. Chapter 4 details the data, implementation, and
-rolling experimental protocol. Chapter 5 presents and discusses the
-forecasting, portfolio, significance, and ablation results. Chapter 6
-concludes with implications, limitations, and avenues for future work.
+ablation analysis. Chapter 4 discusses the data, implementation, and
+rolling experimental protocol. Chapter 5 presents the forecasting, 
+portfolio, significance, and ablation results. Chapter 6
+concludes with implications, limitations, and pathways for future work.
 
 \chapter{Related Work}\label{related-work}
 
@@ -472,83 +397,134 @@ tests, the interpretation is descriptive rather than causal.
 
 \section{Data and Variables}\label{data-and-variables}
 
-The investable universe contains 11 U.S. sector ETFs, providing a
-cross-section that is broad enough to create meaningful allocation
-choices while remaining interpretable. Daily adjusted price histories
-are used for the forecast target and for realized portfolio returns. The
-macroeconomic information set contains five variables: VIX volatility,
-the U.S. 10-year Treasury yield, WTI crude oil, gold, and the U.S.
-dollar index. These variables represent distinct channels of market
-conditions: risk aversion, discount rates, commodity exposure, defensive
-or inflation-sensitive demand, and currency/financial conditions.
+The empirical analysis makes use of 11 U.S. sector exchange-traded funds. The sector ETFs give investors access to that universe while maintaining a consistent, manageable cross-section of major segments of the U.S. equity market for the forecasting and portfolio experiments.
 
-The evaluation period covers decision origins from 2023 into 2026. The
-exact rolling origins are generated from the available trading calendar
-rather than assuming a fixed number of calendar days. Historical series
-are aligned by date, and covariate gaps are handled using only
-information available at the time. The final portfolio sample contains
-42 non-overlapping 21-trading-day periods.
+Five macro-financial variables are used as external covariates:
+VIX volatility, the U.S. 10-year Treasury yield, WTI crude oil,
+gold, and the U.S. dollar index. These variables represent different
+dimensions of the macro-financial environment, including market
+uncertainty, interest rates, energy prices, precious metal prices,
+and currency conditions.
+
+ETF prices and macroeconomic variables are aligned on common trading dates before being supplied to the forecasting pipeline. At each
+decision origin, only observations available through that date are
+included in the historical information set. Future learned ETF prices and future learned macroeconomic observations are excluded
+from the model inputs.
+
+The three experimental arms use the same ETF universe but differ in
+the information given to Chronos-2. Arm B uses the historical ETF
+target series only. Arm A includes the historical macroeconomic
+covariates, while Arm C additionally uses macroeconomic paths
+forecast by Chronos-2 over the subsequent 21-trading-day horizon.
+This construction allows the information set to differ while the
+basic structure used for forecasting does not change.
 
 \section{Rolling Evaluation
 Protocol}\label{rolling-evaluation-protocol}
 
-At each origin, the pipeline performs the following sequence. First, the
-target history and, where applicable, the historical macro covariates
-are sliced through the decision date. Second, Chronos-2 generates a
-21-step probabilistic forecast. For Arm C, a preliminary Chronos-2
-forecast is generated for each macro series, and those predicted values
-become the future-covariate path for the ETF forecast. Third, the
-terminal horizon forecast is converted into an expected return relative
-to P\_t. Fourth, the expected-return vector and trailing covariance
-matrix are passed to the constrained optimizer. Fifth, the realized
-portfolio return from t to t+21 is recorded after transaction costs. The
-procedure then advances to the next non-overlapping origin.
-
-This rolling design mimics a sequence of historical investment
-decisions. No realized t+1 to t+21 ETF price or macro value is supplied
-to the forecaster at time t. The only exception is the ex post
-evaluation stage, where realized outcomes are compared with forecasts
-after the simulated holding period has ended.
+The experiment is carried out using a rolling out-of-sample evaluation.
+At each decision origin \(t\), the forecasting pipeline is restricted
+to the information available up to that date. The historical target and,
+where applicable, covariate series are constructed using a maximum
+context length of 512 observations.
+Chronos-2 then generates a 21-trading-day forecast for each of the
+11 ETFs. For Arm C, the macroeconomic variables are forecast
+first over the same 21-trading-day horizon. Their predicted future
+paths are subsequently delivered to the ETF forecasting stage as
+future covariates. Learned macroeconomic observations after the
+decision origin are not used for this purpose.
+The terminal median ETF forecast at \(t+21\) is converted into an
+expected 21-trading-day return. The complete vector of expected
+returns is then passed to the portfolio-construction procedure
+along with the trailing covariance estimate. Portfolio weights
+are determined using only information available at the corresponding
+decision origin.
+After the portfolio has been formed, its performance is measured
+using the learned ETF returns over the subsequent 21-trading-day
+holding period. The experiment then moves  onto the next
+non-overlapping decision origin and repeats the forecasting,
+allocation, and evaluation procedure.
+This rolling design maintains temporal ordering throughout the
+experiment. In particular, learned ETF prices and macroeconomic
+observations from \(t+1\) through \(t+21\) are not provided to the
+forecasting model when the decision at time \(t\) is made. The
+resulting observations therefore represent sequential out-of-sample
+forecasting and portfolio decisions rather than forecasts constructed
+with future information.
 
 \section{Reproducibility and
 Software}\label{reproducibility-and-software}
 
-The project is implemented in Python and organized as a reproducible
-repository. The revised experimental pipeline is stored under src\_v3,
-while results\_v3 contains summary forecast metrics, portfolio
-comparisons, significance tests, ablation summaries, and figures.
-Chronos-2 is accessed through the chronos-forecasting package. Numerical
-operations use NumPy and pandas, constrained optimization uses SciPy,
-and figures use Matplotlib. The repository includes the input CSV files
-and a requirements file so that a collaborator can clone the project and
-reproduce the experiment.
+The experiment is implemented in Python and organized into
+separate components for forecasting, evaluation, portfolio
+construction, statistical inference, covariate ablation, and result
+generation. The system is designed in a modular fashion, which enables the same experiments to be carried out consistently across the three forecasting arms.
 
-The distinction between the original implementation and V3 is important.
-The revised experiment was created to enforce consistent timing and
-horizon definitions. The final paper therefore reports only V3 results.
-Keeping the earlier implementation in the repository preserves
-development history, but mixing its numerical outputs with V3 would
-combine different experimental definitions and would not be
-methodologically valid.
+Chronos-2 is used through the pretrained
+\texttt{amazon/chronos-2} model. The model is used without
+task-specific tuning, preserving the zero-shot setting examined
+in our research. The same pretrained forecasting architecture is used
+for Arms A, B, and C.
+
+For each forecasting arm, configured parameters shared across the experiment are defined centrally rather than independently. These
+include the 21-trading-day prediction horizon, maximum historical
+context length, portfolio parameters, and other common experimental
+settings. This decreases the possibility that differences between arms
+are caused by inconsistent implementation choices.
+
+Intermediate forecast outputs and evaluation results are stored
+separately from the forecasting code. Forecast evaluation, portfolio
+evaluation, statistical testing, and ablation analysis can therefore
+be reproduced from the corresponding generated outputs without
+altering the underlying forecasting specifications.
+
+The statistical inference process uses a fixed random seed to make
+the bootstrap analysis reproducible across repeated executions under
+the same software environment. The full experimental workflow is
+executed through the project pipeline so that the forecasting,
+evaluation, portfolio, significance-testing, and ablation stages are
+performed in a uniform order
 
 \section{Experimental Controls}\label{experimental-controls}
 
-Several design choices are held fixed across forecasting arms. The model
-checkpoint is identical, no arm is fine-tuned, the prediction horizon is
-21 trading days, the covariance estimator is the same, the optimizer
-uses the same risk-aversion parameter and weight constraints, and
-transaction costs are applied identically. These controls are essential
-because the research question concerns the marginal contribution of
-covariate information rather than a competition among model
-architectures.
+Our experiment is designed to separate the effect of changing the
+information given to the forecasting model. Several components of the pipeline are therefore held constant across Arms A, B, and C.
 
-Arm C is deliberately classified as an extension rather than part of the
-main causal comparison. Its future covariates are themselves model
-forecasts and therefore introduce an additional layer of estimation
-error. If Arm C underperforms Arm A, that result does not imply that
-true known-future covariates would be unhelpful; it implies that the
-two-stage procedure of forecasting macro variables and then using those
-forecasts as future covariates does not add value in this sample.
+First, all three arms use the same pretrained Chronos-2 forecasting
+architecture without any task-specific fine-tuning. The ETF universe,
+decision origins, 21-trading-day forecast horizon, and maximum context
+length are also identical across the main specifications. Consequently,
+the primary difference between the arms is the information available
+to the forecaster.
+
+Second, forecast performance is evaluated using the same learned
+observations and the same set of forecast metrics. This assures that
+differences in median MAPE, mean quantile loss, return MAE, return
+RMSE, directional accuracy, and mean rank IC are calculated from
+comparable evaluation samples.
+
+Third, the downstream portfolio procedure is held fixed. The same
+expected-return transformation, trailing covariance estimator,
+risk-aversion parameter, long-only constraint, maximum asset weight,
+holding period, and transaction-cost assumption are applied to the
+forecast-driven portfolios produced by all three arms. Therefore, differences in portfolio performance do not arise from assigning a
+different optimization rule to a particular forecasting
+specification.
+
+Finally, Arm C is constructed so that the use of future covariates
+does not introduce learned future information. Future macroeconomic
+paths are themselves forecast using information available at the
+decision origin before being passed onto the ETF forecasting stage.
+This differentiates forecasted future information from an infeasible
+experiment in which learned future macroeconomic values are known
+in advance.
+
+These setups allow the comparison to focus on the
+incremental value of the information set. Arm B measures the
+price-only setting, Arm A evaluates the addition of past
+macroeconomic covariates, and Arm C assesses whether estimated
+future macroeconomic paths provide further information beyond the
+historical-covariate specification.
 
 \chapter{Results and Discussion}\label{results-and-discussion}
 
@@ -830,77 +806,27 @@ automatically be fed into a standard mean-variance optimizer.
 
 \section{Summary}\label{summary}
 
-This research asked whether macroeconomic covariates improve the
-economic value of zero-shot Chronos-2 forecasts in a multi-asset
-portfolio setting. The study compared a price-only baseline with a
-historical-covariate treatment and a future-covariate extension across
-11 U.S. sector ETFs. The experimental design aligned the information
-cutoff, 21-trading-day forecast horizon, expected-return definition, and
-realized portfolio holding period, and held the portfolio optimizer
-fixed across arms.
+Our study examined whether macroeconomic covariates improve the economic value of zero-shot Chronos-2 forecasts when used in a fixed portfolio-construction pipeline. We compared three forecasting setups:  a historical-covariate specification (Arm A), a price-only baseline (Arm B), and an extension using forecasted future macroeconomic paths (Arm C). We evaluated the forecasts using both statistical forecasting measures and portfolio performance. 
 
-The results provide qualified support for the usefulness of historical
-macroeconomic covariates. Arm A improves several forecast-error measures
-relative to Arm B and produces a substantially stronger observed
-mean-variance portfolio: 65.36\% cumulative return and a Sharpe ratio of
-1.098 versus 44.92\% and 0.839. However, the block-bootstrap p-value of
-0.2396 and a confidence interval spanning zero mean that the Sharpe
-improvement is not statistically conclusive. The simple equal-weight
-benchmark also remains superior in return and Sharpe ratio.
+The results show that historical macroeconomic covariates provide modest improvements in several forecasting measures. Relative to Arm B, Arm A reduces median MAPE from 3.028\% to 2.957\%, mean quantile loss from 1.287\% to 1.262\%, return MAE from 4.034\% to 3.976\%, and return RMSE from 5.509\% to 5.297\%. Mean rank IC also increases from 0.006 to 0.050. However, directional accuracy decreases from 53.90\% for Arm B to 49.57\% for Arm A. Therefore, including historical macroeconomic covariates improves several, but not all forecasting measures.
 
-The future-covariate extension does not improve on historical covariates
-alone. Arm C remains stronger than the no-covariate baseline in observed
-portfolio performance but slightly weaker than Arm A. The ablation
-analysis suggests that oil and gold are particularly associated with the
-portfolio improvement, while the yield, dollar, and VIX effects are
-smaller or depend on the metric considered.
+The observed improvement is still not statistically significant. The Arm A and Arm B Sharpe ratio difference is approximately 0.264, with a 95\% bootstrap confidence interval of approximately \([-0.202,\,0.735]\) and a two-sided \(p\)-value of 0.2396. Thus, our results provide descriptive evidence of economic improvement, but they do not establish a statistically reliable performance advantage. 
 
-\section{Implications}\label{implications}
+The future-covariate extension produces mixed results. Arm C achieves the lowest return MAE and the highest mean rank IC among the three forecasting specifications, but its portfolio performance does not exceed Arm A. Arm C produces a total return of 63.46\% and an annualized Sharpe ratio of 1.050, compared with 65.36\% and 1.098 for Arm A. Thus, forecasting future macroeconomic paths does not improve portfolio performance beyond using historical macroeconomic information in the present experiment.
 
-The main implication is methodological. Foundation-model forecasting
-should be evaluated at both the statistical and decision levels.
-Covariates can change the economic behavior of a forecasting pipeline
-even when average forecast metrics move only modestly. At the same time,
-an economically attractive backtest difference should not be treated as
-established evidence when uncertainty is large. Reporting forecast
-errors, portfolio metrics, simple benchmarks, and formal inference
-together produces a more credible assessment.
+The leave-one-covariate-out analysis further suggests the portfolio is particularly sensitive to removing WTI crude oil. It reduces total return from 65.36\% to 49.32\% and the annualized Sharpe ratio from 1.098 to 0.930. Removing gold also weakens portfolio performance, while removing the U.S. 10-year Treasury yield, U.S. dollar index, and VIX has smaller effects or depends more on the evaluation metric. These findings are descriptive and should not be interpreted as evidence of causal effects. The equal-weight benchmark provides an important qualification. It achieves a total return of 72.43\% and an annualized Sharpe ratio of 1.274, exceeding all three forecast-driven portfolios. Therefore, the findings do not show that the Chronos-2-based mean-variance strategy outperforms a simple allocation rule. Overall, the results provide a qualified answer to our main research question.
 
-For practitioners, the results suggest that historical macro context can
-be worth testing when using a flexible zero-shot forecaster across
-related assets. But additional information should not be assumed to
-help: noisy future covariate forecasts can fail to add value, and
-individual covariates can have heterogeneous effects. The equal-weight
-benchmark further shows that model sophistication does not guarantee
-superior allocation.
+Historical macroeconomic variables enhance a number of the statistical forecasting criteria and are linked to better observed portfolio performance compared with the price-only Chronos-2 baseline, provided that the downstream portfolio procedure remains unchanged. Yet the improvement in the portfolio is not statistically significant, the forecasted future macroeconomic paths do not perform better than those based on historical covariates, and the equal-weight benchmark still proves to be superior during the evaluation period. Our results thus show that it is important to assess time-series foundation models not only in terms of forecast accuracy but also with regard to the economic decisions derived from their forecasts.
 
 \section{Future Work}\label{future-work}
 
-Several extensions follow naturally. A longer historical evaluation
-could improve statistical power and allow subperiod analysis across
-market regimes. Alternative portfolio mappings could test whether robust
-optimization, rank-based allocation, minimum-variance anchors, or
-explicit turnover regularization better convert forecast information
-into economic value. The covariate set could be expanded to include
-credit, inflation, liquidity, and sector-specific variables.
+Further research could enhance our study. Firstly, it could examine the framework over a longer historical period and across a greater number of portfolio periods. Our analysis includes 42 non-overlapping holding periods, which limits the statistical power of comparisons between portfolios. A longer evaluation sample would make it possible to consider in more detail whether the observed performance differences continue over time.
 
-A particularly important extension is decision-focused or end-to-end
-training. The present study intentionally uses predict-then-optimize so
-that the marginal role of covariates can be isolated. Recent Smart
-Predict-then-Optimize research shows how forecasting models can instead
-be trained against downstream portfolio objectives. Comparing the
-controlled two-stage design with an end-to-end objective would test
-whether covariate information becomes more useful when the model is
-explicitly rewarded for decision quality rather than forecast accuracy.
+Second, our analysis could be applied to a wider range of assets and a greater number of macroeconomic variables. Future research might look at individual equities, international markets, or other asset classes, using further macroeconomic indicators such as inflation, policy rates, credit spreads, and labor-market variables.
 
-Finally, future-covariate research should distinguish variables that are
-truly known ahead of time from variables that must themselves be
-forecast. Archived real-time macro expectations, futures curves,
-scheduled events, and survey forecasts could provide more realistic
-future information. Such work would clarify when
-Chronos-2\textquotesingle s future-covariate interface offers genuine
-financial value rather than simply adding another noisy prediction
-layer.
+Another possibility is to compare Chronos-2 with other time-series foundation models and conventional forecasting methods. This would allow one to assess whether the observed effects of macroeconomic covariates are specific to Chronos-2 or apply across different forecasting architectures.
+
+Finally, researchers could improve the treatment of future covariates by explicitly accounting for uncertainty in predicted macroeconomic paths. Rather than supplying a single estimated future path, they could consider multiple macroeconomic scenarios and propagate this uncertainty through the forecasting and portfolio stages. These extensions provide a broader assessment of when macroeconomic covariates contribute meaningful economic value to time-series foundation-model forecasts and whether the patterns observed in this study remain robust across models, assets, market conditions, and portfolio designs.
 
 \chapter*{Bibliography}\addcontentsline{toc}{chapter}{Bibliography}
 
