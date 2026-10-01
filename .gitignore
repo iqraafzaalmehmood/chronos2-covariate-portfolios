@@ -22,3 +22,17 @@ results_v3/ablation_portfolio_returns.csv
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+# Private signatures
+paper/latex_paper/Signature_*.jpeg
+
+# LaTeX generated files
+paper/latex_paper/main.pdf
+paper/latex_paper/*.aux
+paper/latex_paper/*.log
+paper/latex_paper/*.out
+paper/latex_paper/*.toc
+paper/latex_paper/*.synctex.gz
+
+# Local zip archives
+src_v3.zip
+results_v3.zip
